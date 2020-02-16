@@ -1,8 +1,11 @@
+build
+.vscode/
+__pycache__/
+*.py[cod]
 *.o
 *.d
 *.obj
 *.exe
 *.out
 *.log
-build
-.vscode/
+
