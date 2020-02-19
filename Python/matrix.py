@@ -33,6 +33,18 @@ def matrix_subtraction(A, B):
 			C[i][j] = A[i][j] - B[i][j]
 	return C
 
+def matrix_vector_multiplication(A, x):
+	if len(A[0]) != len(x):
+		raise ValueError('matrix vector product: invalid matrix or vector sizes')
+	
+	rows = len(A)
+	cols = len(A[0])
+	y = [0 for _ in range(rows)]
+	for i in range(rows):
+		for j in range(cols):
+			y[j] += A[i][j] * x[j]
+	return y
+
 def standard_matrix_multiplication(A, B):
 	if len(A[0]) != len(B):
 		raise ValueError('standard matrix multiplication: invalid matrix sizes')
@@ -133,4 +145,73 @@ def strassen_algorithm(A, B):
 			C[i][j] = C_padded[i][j]
 	
 	return C
+
+def diagonal_inverse(A):
+	n = len(A)
+	B = [[0 for _ in range(n)] for _ in range(n)]
+	for i in range(n):
+		B[i][i] = 1 / A[i][i]
+	return B
+
+def jacobi_method(A, b, N=10):
+	if len(A) != len(A[0]) or len(A) != len(b):
+		raise ValueError('jacobi method: invalid matrix and vector sizes')
 	
+	n = len(A)
+	D = [[0 for _ in range(n)] for _ in range(n)]
+	R = [[0 for _ in range(n)] for _ in range(n)]
+	for i in range(n):
+		for j in range(n):
+			if i == j:
+				D[i][j] = A[i][j]
+			else:
+				R[i][j] = A[i][j]
+	
+	D_inv = diagonal_inverse(D)
+	x = [0 for _ in range(n)]
+	for _ in range(N):
+		x = matrix_vector_multiplication(D_inv, matrix_subtraction(b, matrix_vector_multiplication(R, x)))
+	return x
+
+def gauss_seidel_method(A, b, N=10):
+	if len(A) != len(A[0]) or len(A) != len(b):
+		raise ValueError('jacobi method: invalid matrix and vector sizes')
+	
+	n = len(A)
+	L = [[0 for _ in range(n)] for _ in range(n)]
+	U = [[0 for _ in range(n)] for _ in range(n)]
+	for i in range(n):
+		for j in range(n):
+			if i >= j:
+				L[i][j] = A[i][j]
+			else:
+				U[i][j] = A[i][j]
+	
+	L_inv = diagonal_inverse(L)
+	x = [0 for _ in range(n)]
+	for _ in range(N):
+		x = matrix_vector_multiplication(L_inv, matrix_subtraction(b, matrix_vector_multiplication(U, x)))
+	return x
+
+def successive_over_relaxation(A, b, w, N=10):
+	if len(A) != len(A[0]) or len(A) != len(b):
+		raise ValueError('jacobi method: invalid matrix and vector sizes')
+	
+	n = len(A)
+	D = [[0 for _ in range(n)] for _ in range(n)]
+	L = [[0 for _ in range(n)] for _ in range(n)]
+	U = [[0 for _ in range(n)] for _ in range(n)]
+	for i in range(n):
+		for j in range(n):
+			if i > j:
+				L[i][j] = A[i][j]
+			elif i < j:
+				U[i][j] = A[i][j]
+			else:
+				D[i][j] = A[i][j]
+	
+	L_inv = diagonal_inverse(L)
+	x = [0 for _ in range(n)]
+	for _ in range(N):
+		x = matrix_vector_multiplication(L_inv, matrix_subtraction(b, matrix_vector_multiplication(U, x)))
+	return x
