@@ -96,9 +96,9 @@ def strassen_algorithm_square(A, B):
 	M_4 = strassen_algorithm_square(A_22, matrix_subtraction(B_21, B_11))
 	M_5 = strassen_algorithm_square(matrix_addition(A_11, A_12), B_22)
 	M_6 = strassen_algorithm_square(matrix_subtraction(A_21, A_11), matrix_addition(B_11, B_12))
-	M_7 = strassen_algorithm_square(matrix_subtraction(A_11, A_22), matrix_addition(B_21, B_22))
+	M_7 = strassen_algorithm_square(matrix_subtraction(A_12, A_22), matrix_addition(B_21, B_22))
 	
-	C_11 = matrix_addition(matrix_subtraction(matrix_subtraction(M_1, M_4), M_5), M_7)
+	C_11 = matrix_addition(matrix_subtraction(matrix_addition(M_1, M_4), M_5), M_7)
 	C_12 = matrix_addition(M_3, M_5)
 	C_21 = matrix_addition(M_2, M_4)
 	C_22 = matrix_addition(matrix_addition(matrix_subtraction(M_1, M_2), M_3), M_6)
