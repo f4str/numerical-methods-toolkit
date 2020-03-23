@@ -5,6 +5,7 @@ def left_rule(f, a, b, n):
 		area += f(a + i * h)
 	return h * area
 
+
 def right_rule(f, a, b, n):
 	h = (b - a) / n
 	area = 0
@@ -12,12 +13,14 @@ def right_rule(f, a, b, n):
 		area += f(a + i * h)
 	return h * area
 
+
 def midpoint_rule(f, a, b, n):
 	h = (b - a) / n
 	area = 0
 	for i in range(n):
 		area += f(a + (i + 0.5) * h)
 	return h * area
+
 
 def trapezoidal_rule(f, a, b, n):
 	h = (b - a) / n
@@ -29,7 +32,8 @@ def trapezoidal_rule(f, a, b, n):
 	area += f(b)
 	return h / 2 * area
 
-def simpsons_rule(f, a, b, n):
+
+def simpson_rule(f, a, b, n):
 	h = (b - a) / n
 	area = 0
 	
@@ -41,4 +45,3 @@ def simpsons_rule(f, a, b, n):
 			area += 2 * f(a + i * h)
 	area += f(b)
 	return h / 3 * area
-	

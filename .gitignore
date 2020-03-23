@@ -1,4 +1,8 @@
 build
+venv/
+.venv/
+env/
+.env/
 out/
 .idea/
 .vscode/
