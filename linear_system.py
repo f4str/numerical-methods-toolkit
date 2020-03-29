@@ -5,7 +5,7 @@ def gaussian_elimination(A, b):
 	if len(A) != len(A[0]) or len(A[0]) != len(b):
 		raise ValueError('gaussian elimination: invalid matrix or vector sizes')
 	
-	if np.diag(A) == 0:
+	if not np.any(np.diag(A)):
 		raise ValueError('gaussian elimination: no solution')
 	
 	A = np.array(A)
@@ -16,15 +16,15 @@ def gaussian_elimination(A, b):
 		for i in range(row + 1, n):
 			factor = A[i, row] / A[row, row]
 			for j in range(row, n):
-				A[i, j] = A[i, j] - factor * A[row, j]
-			b[i] = b[i] - factor * b[row]
+				A[i, j] -= factor * A[row, j]
+			b[i] -= factor * b[row]
 	
 	x = np.empty(n)
 	x[n - 1] = b[n - 1] / A[n - 1, n - 1]
 	for row in reversed(range(n - 2)):
 		sums = b[row]
 		for j in range(row + 1, n):
-			sums = sums - A[row, j] * x[j]
+			sums -= A[row, j] * x[j]
 		x[row] = sums / A[row, row]
 	return x
 
@@ -33,8 +33,8 @@ def jacobi_method(A, b, n=10):
 	if len(A) != len(A[0]) or len(A) != len(b):
 		raise ValueError('jacobi method: invalid matrix and vector sizes')
 	
-	D = np.diag(A)
-	R = np.array(A) - np.diagflat(D)
+	D = np.diagflat(np.diag(A))
+	R = np.array(A) - D
 	
 	D_inv = np.linalg.inv(D)
 	b = np.array(b)
@@ -67,7 +67,7 @@ def successive_over_relaxation_method(A, b, w, n=10):
 	if len(A) != len(A[0]) or len(A) != len(b):
 		raise ValueError('successive over relaxation method: invalid matrix and vector sizes')
 	
-	D = np.diag(A)
+	D = np.diagflat(np.diag(A))
 	L = np.tril(A, k=-1)
 	U = np.triu(A, k=1)
 	
@@ -77,6 +77,6 @@ def successive_over_relaxation_method(A, b, w, n=10):
 	M = w * U + (w + 1) * D
 	
 	for _ in range(n):
-		x = np.dot(inv, wb - M * x)
+		x = np.dot(inv, wb - np.dot(M, x))
 	
 	return x
