@@ -10,9 +10,9 @@ else:
     long_description = ''
 
 setup(
-    name='python-package-template',
+    name='numerical-methods-toolkit',
     version='0.1.0',
-    description='Python Package Template',
+    description='Numerical Methods Toolkit',
     long_description=long_description,
     long_description_content_type='text/markdown',
     license='MIT',
@@ -27,6 +27,6 @@ setup(
     python_requires='>=3.6',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=[],
+    install_requires=['numpy'],
     extras_require={'dev': ['tox']},
 )
